@@ -1,11 +1,10 @@
 FROM python:3.10-slim
 
-# Work directory inside the container
 WORKDIR /app
 
-# System deps for OpenCV etc.
+# Correct OpenCV dependencies for Debian Trixie (Railway)
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -14,11 +13,9 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your app (app.py, model/, etc.)
+# Copy the rest of your app
 COPY . .
 
-# Expose a port (actual port is given by $PORT from the host)
 EXPOSE 8501
 
-# Start Streamlit, binding to $PORT (Render / Railway set this env var)
 CMD ["sh", "-c", "streamlit run app.py --server.address=0.0.0.0 --server.port=${PORT:-8501}"]
