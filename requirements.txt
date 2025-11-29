@@ -3,6 +3,11 @@ ultralytics
 opencv-python-headless
 pillow
 numpy
-torch
 pyyaml
 requests
+
+# FORCE PyTorch CPU-only (prevents 8GB builds)
+torch==2.2.0+cpu
+torchvision==0.17.0+cpu
+torchaudio==2.2.0+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
